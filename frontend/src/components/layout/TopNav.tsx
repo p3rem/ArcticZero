@@ -1,4 +1,4 @@
-import { Search, LogOut, User } from "lucide-react";
+import { Search, LogOut, User, Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +16,11 @@ import { useSearch } from "@/context/SearchContext";
 import { useLocation } from "react-router-dom";
 
 interface TopNavProps {
-  sidebarCollapsed?: boolean;
+  sidebarCollapsed: boolean;
+  onMobileMenuToggle: () => void;
 }
 
-export function TopNav({ sidebarCollapsed }: TopNavProps) {
+export function TopNav({ sidebarCollapsed, onMobileMenuToggle }: TopNavProps) {
   const { user, logout } = useAuth();
   const { searchQuery, setSearchQuery } = useSearch();
   const location = useLocation();
@@ -38,23 +39,35 @@ export function TopNav({ sidebarCollapsed }: TopNavProps) {
 
   return (
     <header
-      className={`fixed top-0 right-0 z-30 h-16 bg-background/80 backdrop-blur-xl border-b border-border transition-all duration-300 ${sidebarCollapsed ? "left-16" : "left-64"
-        }`}
+      className={`fixed top-0 right-0 z-30 h-16 bg-background/80 backdrop-blur-xl border-b border-border transition-all duration-300 ${sidebarCollapsed ? "md:left-16" : "md:left-64"
+        } left-0`}
     >
-      <div className="flex h-full items-center justify-between px-6">
-        {/* Search */}
-        <div className="relative w-full max-w-md">
-          {showSearch && (
-            <>
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search emissions, reports..."
-                className="pl-10 bg-muted/50 border-0 focus-visible:ring-1 focus-visible:ring-primary/30"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </>
-          )}
+      <div className="flex h-full items-center justify-between px-4 md:px-6">
+        <div className="flex items-center gap-4 w-full max-w-md">
+          {/* Mobile Menu Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden -ml-2 text-muted-foreground"
+            onClick={onMobileMenuToggle}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+
+          {/* Search */}
+          <div className="relative w-full">
+            {showSearch && (
+              <>
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search emissions, reports..."
+                  className="pl-10 bg-muted/50 border-0 focus-visible:ring-1 focus-visible:ring-primary/30"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </>
+            )}
+          </div>
         </div>
 
         {/* Actions */}
