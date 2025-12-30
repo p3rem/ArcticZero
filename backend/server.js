@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { Pool } = require('pg');
+const fs = require('fs');
+const path = require('path');
 
 dotenv.config();
 
@@ -50,6 +52,35 @@ app.get('/api/debug-db', async (req, res) => {
             error: 'DB Connection Failed',
             details: err.message,
             stack: err.stack
+        });
+    }
+});
+
+// Temporary Seed Route (since no shell access)
+app.get('/api/seed-db', async (req, res) => {
+    try {
+        const schemaPath = path.join(__dirname, 'db', 'schema.sql');
+        const seedPath = path.join(__dirname, 'db', 'seed.sql');
+
+        const schemaSql = fs.readFileSync(schemaPath, 'utf8');
+        const seedSql = fs.readFileSync(seedPath, 'utf8');
+
+        // Run Schema
+        await pool.query(schemaSql);
+
+        // Run Seed
+        await pool.query(seedSql);
+
+        res.json({
+            message: "Database successfully initialized!",
+            tables_created: true,
+            data_seeded: true
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'Seeding Failed',
+            details: err.message
         });
     }
 });
