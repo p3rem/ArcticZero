@@ -22,10 +22,21 @@ A comprehensive carbon footprint tracking and management application. This full-
 ![Recommendations](project/recomm%20b.jpg)
 
 ### Mobile Responsive
-<div style="display: flex; gap: 100px; align-items: flex-start;">
-  <img src="project/phone%20landing%20page%20b.jpeg" alt="Mobile Landing" width="300" />
-  <img src="project/phone%20dashboard%20b.jpeg" alt="Mobile Dashboard" width="300" />
-</div>
+<table>
+  <tr>
+    <td align="center">
+      <img src="project/phone%20dashboard%20b.jpeg" alt="Mobile Dashboard" width="300" />
+      <br />
+      <em>Dashboard Overview</em>
+    </td>
+    <td width="50"></td> <!-- Spacer -->
+    <td align="center">
+      <img src="project/phone%20landing%20page%20b.jpeg" alt="Mobile Landing" width="300" />
+      <br />
+      <em>Landing Page</em>
+    </td>
+  </tr>
+</table>
 
 ## 🛠️ Tech Stack
 
