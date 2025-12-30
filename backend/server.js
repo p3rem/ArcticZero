@@ -33,6 +33,27 @@ app.get('/', (req, res) => {
     res.send('Green Footprint Hub API is running');
 });
 
+// Temporary Debug Route for DB Diagnosis
+app.get('/api/debug-db', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT table_name FROM information_schema.tables WHERE table_schema = \'public\'');
+        const userCount = await pool.query('SELECT count(*) FROM users'); // might fail if table missing
+        res.json({
+            status: 'connected',
+            tables: result.rows.map(r => r.table_name),
+            users: userCount.rows[0].count,
+            ssl: process.env.NODE_ENV === 'production'
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'DB Connection Failed',
+            details: err.message,
+            stack: err.stack
+        });
+    }
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
